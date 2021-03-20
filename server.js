@@ -18,7 +18,7 @@ app.post('/login', function(req, res) {
   }
   console.log('successful login');
   // We are sending the profile inside the token
-  var token = jwt.sign({ firstname: 'John', lastname: 'Doe'}, secret, { expiresIn: 5 * 60 });
+  var token = jwt.sign({ firstname: 'John', lastname: 'Doe'}, secret, { expiresIn: 1 * 60 });
   res.json({ token: token });
 });
 
