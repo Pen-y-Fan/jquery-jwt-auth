@@ -12,11 +12,9 @@ $(document).ready(function () {
       },
       success: function (data) {
         $('#modalMessage').text('Hello ' + data.name + '! You have successfully accessed to /api/profile.');
-        // alert('Hello ' + data.name + '! You have successfully accessed to /api/profile.');
       },
       error: function () {
         $('#modalMessage').text("Sorry, you are not logged in.");
-        // alert("Sorry, you are not logged in.");
       }
     });
   });
@@ -32,11 +30,9 @@ $(document).ready(function () {
       success: function (data) {
         localStorage.setItem('token', data.token);
         $('#modalMessage').text('Got a token from the server! Token: ' + data.token);
-        // alert('Got a token from the server! Token: ' + data.token);
       },
       error: function () {
         $('#modalMessage').text("Login Failed");
-        // alert("Login Failed");
       }
     });
   });
@@ -49,13 +45,11 @@ $(document).ready(function () {
         username: "john.doe",
         password: "foobarfoobar"
       },
-      success: function (data) {
+      success: function () {
         $('#modalMessage').text("ERROR: it is not supposed to alert.");
-        // alert("ERROR: it is not supposed to alert.");
       },
       error: function () {
         $('#modalMessage').text("Login Failed");
-        // alert("Login Failed");
       }
     });
   });
@@ -65,23 +59,18 @@ $(document).ready(function () {
       var token = localStorage.getItem('token');
       if (token === null) {
         $('#modalMessage').text("Empty token");
-        // alert("Empty token");
         return;
       }
       var parseJwtToken = parseJwt(token);
-      console.log(parseJwtToken);
       if (parseJwtToken.exp < Date.now() / 1000) {
         localStorage.removeItem('token');
         $('#modalMessage').text("Token expired, logout successful");
-        // alert("Token expired, logout successful");
       } else {
         localStorage.removeItem('token');
         $('#modalMessage').text("Logout successful");
-        // alert("Logout successful");
       }
     } else {
       $('#modalMessage').text("No token");
-      // alert("No token")
     }
   });
 
