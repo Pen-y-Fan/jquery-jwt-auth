@@ -1,7 +1,7 @@
 {
   "name": "javascript-jwt-auth",
   "version": "1.0.0",
-  "description": "This is a tutorial example for token authentication using vanilla javascript",
+  "description": "This is a tutorial example for token authentication using jQuery",
   "main": "server.js",
   "scripts": {
     "test": "npm install, node server.js",
