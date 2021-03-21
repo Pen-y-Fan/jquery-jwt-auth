@@ -1,24 +1,28 @@
 $(document).ready(function () {
   $('#test').on('click', function () {
+    displaySpinner()
     $("#closeModal").focus();
     $.ajax({
       type: 'GET',
       url: '/api/profile',
       beforeSend: function (xhr) {
         var token = localStorage.getItem('token');
-        if (token === null) {
+        if (token) {
           xhr.setRequestHeader('Authorization', 'Bearer ' + token);
         }
       },
       success: function (data) {
-        $('#modalMessage').text('Hello ' + data.name + '! You have successfully accessed to /api/profile.');
+        $('#modalMessage').html('Hello ' + data.name + '! You have successfully accessed to /api/profile.');
       },
       error: function () {
-        $('#modalMessage').text("Sorry, you are not logged in.");
+        $('#modalMessage').html("Sorry, you are not logged in.");
+        $("#closeModal").focus();
       }
     });
   });
+
   $('#goodLogin').on('click', function () {
+    displaySpinner()
     $("#closeModal").focus();
     $.ajax({
       type: "POST",
@@ -29,14 +33,18 @@ $(document).ready(function () {
       },
       success: function (data) {
         localStorage.setItem('token', data.token);
-        $('#modalMessage').text('Got a token from the server! Token: ' + data.token);
+        var message = "<div class=\"d-inline-block text-wrap\">Got a token from the server! Token:<br/>";
+        message += data.token + "</div>"
+        $('#modalMessage').html(message);
       },
       error: function () {
-        $('#modalMessage').text("Login Failed");
+        $('#modalMessage').html("Login Failed");
       }
     });
   });
+
   $('#badLogin').on('click', function () {
+    displaySpinner()
     $("#closeModal").focus();
     $.ajax({
       type: "POST",
@@ -46,32 +54,31 @@ $(document).ready(function () {
         password: "foobarfoobar"
       },
       success: function () {
-        $('#modalMessage').text("ERROR: it is not supposed to alert.");
+        $('#modalMessage').html("ERROR: it is not supposed to alert.");
       },
       error: function () {
-        $('#modalMessage').text("Login Failed");
+        $('#modalMessage').html("Login Failed");
       }
     });
   });
+
   $('#logout').on('click', function () {
+    displaySpinner()
     $("#closeModal").focus();
-    if (localStorage.token) {
-      var token = localStorage.getItem('token');
-      if (token === null) {
-        $('#modalMessage').text("Empty token");
-        return;
-      }
-      var parseJwtToken = parseJwt(token);
-      if (parseJwtToken.exp < Date.now() / 1000) {
-        localStorage.removeItem('token');
-        $('#modalMessage').text("Token expired, logout successful");
-      } else {
-        localStorage.removeItem('token');
-        $('#modalMessage').text("Logout successful");
-      }
-    } else {
-      $('#modalMessage').text("No token");
+    var $modalMessage = $('#modalMessage');
+    var token = localStorage.getItem('token');
+    if (!token) {
+      $modalMessage.html("No token");
+      return;
     }
+    var parseJwtToken = parseJwt(token);
+    if (parseJwtToken.exp < Date.now() / 1000) {
+      localStorage.removeItem('token');
+      $modalMessage.html("Token expired, logout successful");
+      return;
+    }
+    localStorage.removeItem('token');
+    $modalMessage.html("Logout successful");
   });
 
   function parseJwt(token) {
@@ -82,5 +89,12 @@ $(document).ready(function () {
     }).join(''));
 
     return JSON.parse(jsonPayload);
+  }
+
+  function displaySpinner() {
+    var spinner = '<img alt="loading spinner"';
+    spinner += 'src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"';
+    spinner += 'height="200" width="200">';
+    $("#modalMessage").html(spinner);
   }
 });
