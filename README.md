@@ -53,7 +53,7 @@ Each button will perform an ajax call to the Express server.
 
 ### Test Logged in
 
-Test Logged in button will make a GET call to **/api/profile**, if a token is in localStorage it will be supplied in 
+The Test Logged in button will make a GET call to **/api/profile**, if a token is in localStorage it will be supplied in 
 the request header.
 
 The response will display:
@@ -82,10 +82,9 @@ The bad login button will make a POST call to **/login** with the user **john.do
 
 The Logout button will check the token in localStorage.
 
-- **Empty token**: “Empty token“
+- **No token** : “No token“
 - **Token has expired (max age 1 min)**: token removed and “Token expired, logout successful“ displayed
 - **Token hasn't expired**: token removed and “Logout successful” displayed
-- **No token** : “No token“
 
 ## Source code
 
